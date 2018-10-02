@@ -14,4 +14,12 @@ node('master') {
         withSonarQubeEnv('sonar-6') { 
         sh "${mvnHome}/bin/mvn sonar:sonar"
     }
+        
+        stage('nexus artifact uploader'){
+            nexusArtifactUploader artifacts: [[artifactId: '**/*.war', classifier: '',
+            file: '/var/lib/jenkins/workspace/Jenkins-Sonarqube-nexus/target/*.war', type: 'war']], 
+            credentialsId: '', groupId: 'dev', nexusUrl: '', nexusVersion: 'nexus2',
+            protocol: 'http', repository: '$BUILD_TIMESTAMP', version: '$BUILD_ID'
+
+        }
 }
