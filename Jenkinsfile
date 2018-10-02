@@ -9,12 +9,11 @@ node('master') {
       sh "${mvnHome}/bin/mvn clean package"
    }
     
-    
-        
+            
      stage('nexus artifact uploader'){
             nexusArtifactUploader artifacts: [[artifactId: '$BUILD_TIMESTAMP',
             classifier: '', file: '/var/lib/jenkins/workspace/Jenkins-Sonarqube-nexus/target/*.war', type: 'war']], 
-            credentialsId: 'f3390c6a-2656-4419-a68d-ddc7ebd8a426', groupId: 'dev', nexusUrl: '34.218.209.217:8081/nexus',
+            credentialsId: 'f3390c6a-2656-4419-a68d-ddc7ebd8a426', groupId: 'dev1', nexusUrl: '34.218.209.217:8081/nexus',
             nexusVersion: 'nexus2', protocol: 'http', repository: 'test', version: '$BUILD_ID'
 
         }
