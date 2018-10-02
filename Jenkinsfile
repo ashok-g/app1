@@ -9,17 +9,13 @@ node('master') {
       sh "${mvnHome}/bin/mvn clean package"
    }
     
-    stage('SonarQube Analysis') {
-        def mvnHome =  tool name: 'maven-3', type: 'maven'
-        withSonarQubeEnv('sonar-6') { 
-        sh "${mvnHome}/bin/mvn sonar:sonar"
-    }
+    
         
      stage('nexus artifact uploader'){
-            nexusArtifactUploader artifacts: [[artifactId: '**/*.war', classifier: '',
-            file: '/var/lib/jenkins/workspace/Jenkins-Sonarqube-nexus/target/*.war', type: 'war']], 
-            credentialsId: '', groupId: 'dev', nexusUrl: '', nexusVersion: 'nexus2',
-            protocol: 'http', repository: '$BUILD_TIMESTAMP', version: '$BUILD_ID'
+            nexusArtifactUploader artifacts: [[artifactId: '$BUILD_TIMESTAMP',
+            classifier: '', file: '/var/lib/jenkins/workspace/Jenkins-Sonarqube-nexus/target/*.war', type: 'war']], 
+            credentialsId: 'f3390c6a-2656-4419-a68d-ddc7ebd8a426', groupId: 'dev', nexusUrl: '34.218.209.217:8081/nexus',
+            nexusVersion: 'nexus2', protocol: 'http', repository: 'test', version: '$BUILD_ID'
 
         }
 }
